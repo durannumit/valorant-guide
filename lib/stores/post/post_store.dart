@@ -1,4 +1,5 @@
 import 'package:boilerplate/data/repository.dart';
+import 'package:boilerplate/models/agents/agent.dart';
 import 'package:boilerplate/models/post/post_list.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
@@ -19,15 +20,20 @@ abstract class _PostStore with Store {
   _PostStore(Repository repository) : this._repository = repository;
 
   // store variables:-----------------------------------------------------------
-  static ObservableFuture<PostList?> emptyPostResponse =
-      ObservableFuture.value(null);
+  static ObservableFuture<PostList?> emptyPostResponse = ObservableFuture.value(null);
+  static ObservableFuture<Agent?> emptyAgentResponse = ObservableFuture.value(null);
 
   @observable
-  ObservableFuture<PostList?> fetchPostsFuture =
-      ObservableFuture<PostList?>(emptyPostResponse);
+  ObservableFuture<PostList?> fetchPostsFuture = ObservableFuture<PostList?>(emptyPostResponse);
+
+  @observable
+  ObservableFuture<Agent?> fetchAgentsFuture = ObservableFuture<Agent?>(emptyAgentResponse);
 
   @observable
   PostList? postList;
+
+  @observable
+  Agent? agentList;
 
   @observable
   bool success = false;
@@ -43,6 +49,19 @@ abstract class _PostStore with Store {
 
     future.then((postList) {
       this.postList = postList;
+    }).catchError((error) {
+      errorStore.errorMessage = DioErrorUtil.handleError(error);
+    });
+  }
+
+  @action
+  Future getAgents() async {
+    final future = _repository.getAgents();
+    fetchAgentsFuture = ObservableFuture(future);
+
+    future.then((response) {
+      this.agentList = response;
+      print(agentList);
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });

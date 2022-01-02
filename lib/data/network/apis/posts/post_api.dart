@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
+import 'package:boilerplate/models/agents/agent.dart';
 import 'package:boilerplate/models/post/post_list.dart';
 
 class PostApi {
@@ -26,7 +27,18 @@ class PostApi {
     }
   }
 
-/// sample api call with default rest client
+  /// Returns list of post in response
+  Future<Agent> getAgents() async {
+    try {
+      final res = await _dioClient.get(Endpoints.agents);
+      return Agent.fromJson(res);
+    } catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
+
+  /// sample api call with default rest client
 //  Future<PostsList> getPosts() {
 //
 //    return _restClient
