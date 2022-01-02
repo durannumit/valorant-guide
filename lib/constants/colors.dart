@@ -19,4 +19,6 @@ class AppColors {
   static const Color background = Color(0xFF0F1923);
   static const Color mainTextColor = Color(0xFFEEEEEE);
   static const Color selectedTabColor = Color(0xFFFD4959);
+  static const Color gradientStartColor = Color(0xFF6365C2);
+  static const Color gradientEndColor = Color(0xFF292A4B);
 }

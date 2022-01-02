@@ -67,8 +67,8 @@ class AgentData {
     characterTags = null;
     displayIcon = json['displayIcon'];
     displayIconSmall = json['displayIconSmall'];
-    bustPortrait = null;
-    fullPortrait = null;
+    bustPortrait = json['bustPortrait'];
+    fullPortrait = json['fullPortrait'];
     killfeedPortrait = json['killfeedPortrait'];
     assetPath = json['assetPath'];
     isFullPortraitRightFacing = json['isFullPortraitRightFacing'];

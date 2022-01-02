@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:valorant_guide/constants/colors.dart';
 import 'package:valorant_guide/data/sharedpref/constants/preferences.dart';
@@ -174,11 +175,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (_postStore.agentList != null) {
                     return _postStore.agentList!.data.isNotEmpty
                         ? Container(
-                            height: 75 * (_postStore.agentList!.data.length).toDouble(),
+                            height: (MediaQuery.of(context).size.height * 0.15) * (_postStore.agentList!.data.length).toDouble(),
                             child: TabBarView(children: [
-                              Container(),
-                              Container(),
-                              Container(),
+                              _gridCards(),
+                              _gridCards(),
+                              _gridCards(),
                             ]),
                           )
                         : Container(
@@ -207,6 +208,90 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.background,
       body: _buildBody(),
     );
+  }
+
+  Widget _gridCards() {
+    return Observer(builder: (context) {
+      return GridView.count(
+        // Create a grid with 2 columns. If you change the scrollDirection to
+        // horizontal, this produces 2 rows.
+        crossAxisCount: 2,
+        physics: new NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.8,
+        // Generate 100 widgets that display their index in the List.
+        children: List.generate(_postStore.agentList!.data.length, (index) {
+          return Stack(
+            children: [
+              Transform(
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0.01)
+                  ..rotateY(-0.06)
+                  ..rotateX(-0.1),
+                alignment: FractionalOffset.bottomLeft,
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          AppColors.gradientStartColor,
+                          AppColors.gradientEndColor,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                      color: Colors.purple),
+                ),
+              ),
+              _postStore.agentList!.data[index].fullPortrait != null
+                  ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: CachedNetworkImage(
+                        imageUrl: _postStore.agentList!.data[index].bustPortrait!,
+                        progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                    )
+                  : SizedBox(
+                      width: 65.0,
+                      height: 65.0,
+                      child: Icon(
+                        Icons.person,
+                        size: 36.0,
+                        color: Colors.white,
+                      ),
+                    ),
+              Positioned(
+                left: 10,
+                bottom: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _postStore.agentList!.data[index].displayName,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.mainTextColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        letterSpacing: 2.0,
+                      ),
+                    ),
+                    Text(
+                      _postStore.agentList!.data[index].role != null ? _postStore.agentList!.data[index].role!.displayName : "",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 10),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        }),
+      );
+    });
   }
 
   Widget _buildBody() {

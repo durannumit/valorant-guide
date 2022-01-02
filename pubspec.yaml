@@ -70,6 +70,9 @@ dependencies:
 
   flutter_svg: ^1.0.0
 
+  cached_network_image: ^3.2.0
+  palette_generator: ^0.3.2
+
 
 dev_dependencies:
   flutter_test:
