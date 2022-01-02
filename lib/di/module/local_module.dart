@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:boilerplate/data/local/constants/db_constants.dart';
-import 'package:boilerplate/utils/encryption/xxtea.dart';
+import 'package:valorant_guide/data/local/constants/db_constants.dart';
+import 'package:valorant_guide/utils/encryption/xxtea.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
@@ -9,8 +9,6 @@ import 'package:sembast/sembast_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class LocalModule {
-
-
   /// A singleton preference provider.
   ///
   /// Calling it multiple times will return the same instance.

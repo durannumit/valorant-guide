@@ -1,8 +1,7 @@
-import 'package:boilerplate/data/repository.dart';
-import 'package:boilerplate/models/agents/agent.dart';
-import 'package:boilerplate/models/post/post_list.dart';
-import 'package:boilerplate/stores/error/error_store.dart';
-import 'package:boilerplate/utils/dio/dio_error_util.dart';
+import 'package:valorant_guide/data/repository.dart';
+import 'package:valorant_guide/models/agents/agent.dart';
+import 'package:valorant_guide/stores/error/error_store.dart';
+import 'package:valorant_guide/utils/dio/dio_error_util.dart';
 import 'package:mobx/mobx.dart';
 
 part 'post_store.g.dart';
@@ -20,17 +19,10 @@ abstract class _PostStore with Store {
   _PostStore(Repository repository) : this._repository = repository;
 
   // store variables:-----------------------------------------------------------
-  static ObservableFuture<PostList?> emptyPostResponse = ObservableFuture.value(null);
   static ObservableFuture<Agent?> emptyAgentResponse = ObservableFuture.value(null);
 
   @observable
-  ObservableFuture<PostList?> fetchPostsFuture = ObservableFuture<PostList?>(emptyPostResponse);
-
-  @observable
   ObservableFuture<Agent?> fetchAgentsFuture = ObservableFuture<Agent?>(emptyAgentResponse);
-
-  @observable
-  PostList? postList;
 
   @observable
   Agent? agentList;
@@ -39,20 +31,7 @@ abstract class _PostStore with Store {
   bool success = false;
 
   @computed
-  bool get loading => fetchPostsFuture.status == FutureStatus.pending;
-
-  // actions:-------------------------------------------------------------------
-  @action
-  Future getPosts() async {
-    final future = _repository.getPosts();
-    fetchPostsFuture = ObservableFuture(future);
-
-    future.then((postList) {
-      this.postList = postList;
-    }).catchError((error) {
-      errorStore.errorMessage = DioErrorUtil.handleError(error);
-    });
-  }
+  bool get loading => fetchAgentsFuture.status == FutureStatus.pending;
 
   @action
   Future getAgents() async {

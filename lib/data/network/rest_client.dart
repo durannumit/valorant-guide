@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:boilerplate/data/network/constants/endpoints.dart';
+import 'package:valorant_guide/data/network/constants/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 import 'exceptions/network_exceptions.dart';
@@ -16,8 +16,7 @@ class RestClient {
   }
 
   // Post:----------------------------------------------------------------------
-  Future<dynamic> post(String path,
-      {Map<String, String>? headers, body, encoding}) {
+  Future<dynamic> post(String path, {Map<String, String>? headers, body, encoding}) {
     return http
         .post(
           Uri.https(Endpoints.baseUrl, path),
@@ -29,8 +28,7 @@ class RestClient {
   }
 
   // Put:----------------------------------------------------------------------
-  Future<dynamic> put(String path,
-      {Map<String, String>? headers, body, encoding}) {
+  Future<dynamic> put(String path, {Map<String, String>? headers, body, encoding}) {
     return http
         .put(
           Uri.https(Endpoints.baseUrl, path),
@@ -42,8 +40,7 @@ class RestClient {
   }
 
   // Delete:----------------------------------------------------------------------
-  Future<dynamic> delete(String path,
-      {Map<String, String>? headers, body, encoding}) {
+  Future<dynamic> delete(String path, {Map<String, String>? headers, body, encoding}) {
     return http
         .delete(
           Uri.https(Endpoints.baseUrl, path),
@@ -60,8 +57,7 @@ class RestClient {
     final int statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode > 400) {
-      throw NetworkException(
-          message: 'Error fetching data from server', statusCode: statusCode);
+      throw NetworkException(message: 'Error fetching data from server', statusCode: statusCode);
     }
 
     return _decoder.convert(res);

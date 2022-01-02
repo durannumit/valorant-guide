@@ -16,33 +16,33 @@ mixin _$PostStore on _PostStore, Store {
           Computed<bool>(() => super.loading, name: '_PostStore.loading'))
       .value;
 
-  final _$fetchPostsFutureAtom = Atom(name: '_PostStore.fetchPostsFuture');
+  final _$fetchAgentsFutureAtom = Atom(name: '_PostStore.fetchAgentsFuture');
 
   @override
-  ObservableFuture<PostList?> get fetchPostsFuture {
-    _$fetchPostsFutureAtom.reportRead();
-    return super.fetchPostsFuture;
+  ObservableFuture<Agent?> get fetchAgentsFuture {
+    _$fetchAgentsFutureAtom.reportRead();
+    return super.fetchAgentsFuture;
   }
 
   @override
-  set fetchPostsFuture(ObservableFuture<PostList?> value) {
-    _$fetchPostsFutureAtom.reportWrite(value, super.fetchPostsFuture, () {
-      super.fetchPostsFuture = value;
+  set fetchAgentsFuture(ObservableFuture<Agent?> value) {
+    _$fetchAgentsFutureAtom.reportWrite(value, super.fetchAgentsFuture, () {
+      super.fetchAgentsFuture = value;
     });
   }
 
-  final _$postListAtom = Atom(name: '_PostStore.postList');
+  final _$agentListAtom = Atom(name: '_PostStore.agentList');
 
   @override
-  PostList? get postList {
-    _$postListAtom.reportRead();
-    return super.postList;
+  Agent? get agentList {
+    _$agentListAtom.reportRead();
+    return super.agentList;
   }
 
   @override
-  set postList(PostList? value) {
-    _$postListAtom.reportWrite(value, super.postList, () {
-      super.postList = value;
+  set agentList(Agent? value) {
+    _$agentListAtom.reportWrite(value, super.agentList, () {
+      super.agentList = value;
     });
   }
 
@@ -61,18 +61,18 @@ mixin _$PostStore on _PostStore, Store {
     });
   }
 
-  final _$getPostsAsyncAction = AsyncAction('_PostStore.getPosts');
+  final _$getAgentsAsyncAction = AsyncAction('_PostStore.getAgents');
 
   @override
-  Future<dynamic> getPosts() {
-    return _$getPostsAsyncAction.run(() => super.getPosts());
+  Future<dynamic> getAgents() {
+    return _$getAgentsAsyncAction.run(() => super.getAgents());
   }
 
   @override
   String toString() {
     return '''
-fetchPostsFuture: ${fetchPostsFuture},
-postList: ${postList},
+fetchAgentsFuture: ${fetchAgentsFuture},
+agentList: ${agentList},
 success: ${success},
 loading: ${loading}
     ''';

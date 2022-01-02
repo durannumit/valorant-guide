@@ -1,5 +1,5 @@
-import 'package:boilerplate/data/network/constants/endpoints.dart';
-import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
+import 'package:valorant_guide/data/network/constants/endpoints.dart';
+import 'package:valorant_guide/data/sharedpref/shared_preference_helper.dart';
 import 'package:dio/dio.dart';
 
 abstract class NetworkModule {
@@ -22,8 +22,7 @@ abstract class NetworkModule {
       ))
       ..interceptors.add(
         InterceptorsWrapper(
-          onRequest: (RequestOptions options,
-              RequestInterceptorHandler handler) async {
+          onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
             // getting token
             var token = await sharedPrefHelper.authToken;
 

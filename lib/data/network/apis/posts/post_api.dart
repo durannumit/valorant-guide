@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:boilerplate/data/network/constants/endpoints.dart';
-import 'package:boilerplate/data/network/dio_client.dart';
-import 'package:boilerplate/data/network/rest_client.dart';
-import 'package:boilerplate/models/agents/agent.dart';
-import 'package:boilerplate/models/post/post_list.dart';
+import 'package:valorant_guide/data/network/constants/endpoints.dart';
+import 'package:valorant_guide/data/network/dio_client.dart';
+import 'package:valorant_guide/data/network/rest_client.dart';
+import 'package:valorant_guide/models/agents/agent.dart';
 
 class PostApi {
   // dio instance
@@ -15,17 +14,6 @@ class PostApi {
 
   // injecting dio instance
   PostApi(this._dioClient, this._restClient);
-
-  /// Returns list of post in response
-  Future<PostList> getPosts() async {
-    try {
-      final res = await _dioClient.get(Endpoints.getPosts);
-      return PostList.fromJson(res);
-    } catch (e) {
-      print(e.toString());
-      throw e;
-    }
-  }
 
   /// Returns list of post in response
   Future<Agent> getAgents() async {

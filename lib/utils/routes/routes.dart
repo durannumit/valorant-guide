@@ -1,6 +1,6 @@
-import 'package:boilerplate/ui/home/home.dart';
-import 'package:boilerplate/ui/login/login.dart';
-import 'package:boilerplate/ui/splash/splash.dart';
+import 'package:valorant_guide/ui/home/home.dart';
+import 'package:valorant_guide/ui/login/login.dart';
+import 'package:valorant_guide/ui/splash/splash.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -17,6 +17,3 @@ class Routes {
     home: (BuildContext context) => HomeScreen(),
   };
 }
-
-
-

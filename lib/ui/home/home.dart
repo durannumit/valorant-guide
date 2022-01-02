@@ -1,11 +1,11 @@
 import 'package:another_flushbar/flushbar_helper.dart';
-import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
-import 'package:boilerplate/utils/routes/routes.dart';
-import 'package:boilerplate/stores/language/language_store.dart';
-import 'package:boilerplate/stores/post/post_store.dart';
-import 'package:boilerplate/stores/theme/theme_store.dart';
-import 'package:boilerplate/utils/locale/app_localization.dart';
-import 'package:boilerplate/widgets/progress_indicator_widget.dart';
+import 'package:valorant_guide/data/sharedpref/constants/preferences.dart';
+import 'package:valorant_guide/utils/routes/routes.dart';
+import 'package:valorant_guide/stores/language/language_store.dart';
+import 'package:valorant_guide/stores/post/post_store.dart';
+import 'package:valorant_guide/stores/theme/theme_store.dart';
+import 'package:valorant_guide/utils/locale/app_localization.dart';
+import 'package:valorant_guide/widgets/progress_indicator_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_dialog/material_dialog.dart';
@@ -39,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // check to see if already called api
     if (!_postStore.loading) {
-      _postStore.getPosts();
       _postStore.getAgents();
     }
   }
@@ -69,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildListView() {
-    return _postStore.postList != null
+    return _postStore.agentList != null
         ? ListView.separated(
-            itemCount: _postStore.postList!.posts!.length,
+            itemCount: _postStore.agentList!.data.length,
             separatorBuilder: (context, position) {
               return Divider();
             },
@@ -91,14 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
       dense: true,
       leading: Icon(Icons.cloud_circle),
       title: Text(
-        '${_postStore.postList?.posts?[position].title}',
+        '${_postStore.agentList?.data[position].developerName}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
         style: Theme.of(context).textTheme.headline6,
       ),
       subtitle: Text(
-        '${_postStore.postList?.posts?[position].body}',
+        '${_postStore.agentList?.data[position].developerName}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: false,

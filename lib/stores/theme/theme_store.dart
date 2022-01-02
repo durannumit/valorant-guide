@@ -1,5 +1,5 @@
-import 'package:boilerplate/data/repository.dart';
-import 'package:boilerplate/stores/error/error_store.dart';
+import 'package:valorant_guide/data/repository.dart';
+import 'package:valorant_guide/stores/error/error_store.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
@@ -20,13 +20,11 @@ abstract class _ThemeStore with Store {
   @observable
   bool _darkMode = false;
 
-
   // getters:-------------------------------------------------------------------
   bool get darkMode => _darkMode;
 
   // constructor:---------------------------------------------------------------
-  _ThemeStore(Repository repository)
-      : this._repository = repository {
+  _ThemeStore(Repository repository) : this._repository = repository {
     init();
   }
 
@@ -42,12 +40,9 @@ abstract class _ThemeStore with Store {
     _darkMode = _repository.isDarkMode;
   }
 
-  bool isPlatformDark(BuildContext context) =>
-      MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+  bool isPlatformDark(BuildContext context) => MediaQuery.platformBrightnessOf(context) == Brightness.dark;
 
   // dispose:-------------------------------------------------------------------
   @override
-  dispose() {
-
-  }
+  dispose() {}
 }

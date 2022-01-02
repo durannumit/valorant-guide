@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:boilerplate/data/local/datasources/post/post_datasource.dart';
-import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
-import 'package:boilerplate/models/agents/agent.dart';
-import 'package:boilerplate/models/post/post.dart';
-import 'package:boilerplate/models/post/post_list.dart';
+import 'package:valorant_guide/data/sharedpref/shared_preference_helper.dart';
+import 'package:valorant_guide/models/agents/agent.dart';
+
 import 'package:sembast/sembast.dart';
 
 import 'local/constants/db_constants.dart';
@@ -12,7 +10,6 @@ import 'network/apis/posts/post_api.dart';
 
 class Repository {
   // data source object
-  final PostDataSource _postDataSource;
 
   // api objects
   final PostApi _postApi;
@@ -21,21 +18,10 @@ class Repository {
   final SharedPreferenceHelper _sharedPrefsHelper;
 
   // constructor
-  Repository(this._postApi, this._sharedPrefsHelper, this._postDataSource);
-
-  // Post: ---------------------------------------------------------------------
-  Future<PostList> getPosts() async {
-    // check to see if posts are present in database, then fetch from database
-    // else make a network call to get all posts, store them into database for
-    // later use
-    return await _postApi.getPosts().then((postsList) {
-      postsList.posts?.forEach((post) {
-        _postDataSource.insert(post);
-      });
-
-      return postsList;
-    }).catchError((error) => throw error);
-  }
+  Repository(
+    this._postApi,
+    this._sharedPrefsHelper,
+  );
 
   // Agents: ---------------------------------------------------------------------
   Future<Agent> getAgents() async {
@@ -46,12 +32,6 @@ class Repository {
       return agentList;
     }).catchError((error) => throw error);
   }
-
-  Future<int> insert(Post post) => _postDataSource.insert(post).then((id) => id).catchError((error) => throw error);
-
-  Future<int> update(Post post) => _postDataSource.update(post).then((id) => id).catchError((error) => throw error);
-
-  Future<int> delete(Post post) => _postDataSource.update(post).then((id) => id).catchError((error) => throw error);
 
   // Login:---------------------------------------------------------------------
   Future<bool> login(String email, String password) async {
