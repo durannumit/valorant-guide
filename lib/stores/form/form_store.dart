@@ -1,4 +1,4 @@
-import 'package:boilerplate/stores/error/error_store.dart';
+import 'package:valorant_guide/stores/error/error_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
 
@@ -21,11 +21,7 @@ abstract class _FormStore with Store {
   late List<ReactionDisposer> _disposers;
 
   void _setupValidations() {
-    _disposers = [
-      reaction((_) => userEmail, validateUserEmail),
-      reaction((_) => password, validatePassword),
-      reaction((_) => confirmPassword, validateConfirmPassword)
-    ];
+    _disposers = [reaction((_) => userEmail, validateUserEmail), reaction((_) => password, validatePassword), reaction((_) => confirmPassword, validateConfirmPassword)];
   }
 
   // store variables:-----------------------------------------------------------
@@ -45,19 +41,13 @@ abstract class _FormStore with Store {
   bool loading = false;
 
   @computed
-  bool get canLogin =>
-      !formErrorStore.hasErrorsInLogin && userEmail.isNotEmpty && password.isNotEmpty;
+  bool get canLogin => !formErrorStore.hasErrorsInLogin && userEmail.isNotEmpty && password.isNotEmpty;
 
   @computed
-  bool get canRegister =>
-      !formErrorStore.hasErrorsInRegister &&
-      userEmail.isNotEmpty &&
-      password.isNotEmpty &&
-      confirmPassword.isNotEmpty;
+  bool get canRegister => !formErrorStore.hasErrorsInRegister && userEmail.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty;
 
   @computed
-  bool get canForgetPassword =>
-      !formErrorStore.hasErrorInForgotPassword && userEmail.isNotEmpty;
+  bool get canForgetPassword => !formErrorStore.hasErrorInForgotPassword && userEmail.isNotEmpty;
 
   // actions:-------------------------------------------------------------------
   @action
@@ -123,9 +113,7 @@ abstract class _FormStore with Store {
     }).catchError((e) {
       loading = false;
       success = false;
-      errorStore.errorMessage = e.toString().contains("ERROR_USER_NOT_FOUND")
-          ? "Username and password doesn't match"
-          : "Something went wrong, please check your internet connection and try again";
+      errorStore.errorMessage = e.toString().contains("ERROR_USER_NOT_FOUND") ? "Username and password doesn't match" : "Something went wrong, please check your internet connection and try again";
       print(e);
     });
   }
@@ -169,8 +157,7 @@ abstract class _FormErrorStore with Store {
   bool get hasErrorsInLogin => userEmail != null || password != null;
 
   @computed
-  bool get hasErrorsInRegister =>
-      userEmail != null || password != null || confirmPassword != null;
+  bool get hasErrorsInRegister => userEmail != null || password != null || confirmPassword != null;
 
   @computed
   bool get hasErrorInForgotPassword => userEmail != null;
