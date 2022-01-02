@@ -26,7 +26,7 @@ import 'package:valorant_guide/constants/font_family.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData themeData = new ThemeData(
-  fontFamily: FontFamily.productSans,
+  fontFamily: FontFamily.rubik,
   brightness: Brightness.light,
   primarySwatch: MaterialColor(AppColors.orange[500]!.value, AppColors.orange),
   primaryColor: AppColors.orange[500],
@@ -34,7 +34,7 @@ final ThemeData themeData = new ThemeData(
 );
 
 final ThemeData themeDataDark = ThemeData(
-  fontFamily: FontFamily.productSans,
+  fontFamily: FontFamily.rubik,
   brightness: Brightness.dark,
   primaryColor: AppColors.orange[500],
   primaryColorBrightness: Brightness.dark,

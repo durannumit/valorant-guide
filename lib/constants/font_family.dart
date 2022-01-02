@@ -3,4 +3,5 @@ class FontFamily {
 
   static String productSans = "ProductSans";
   static String roboto = "Roboto";
+  static String rubik = "Rubik";
 }

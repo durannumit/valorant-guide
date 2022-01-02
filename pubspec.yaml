@@ -68,6 +68,9 @@ dependencies:
   # for dependency injection
   get_it: ^7.1.3
 
+  flutter_svg: ^1.0.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -123,6 +126,13 @@ flutter:
       style: italic
     - asset: assets/fonts/Product-Sans-Bold.ttf
       weight: 700
-
+  - family: Rubik
+    fonts:
+    - asset: assets/fonts/Rubik-Regular.ttf
+    - asset: assets/fonts/Rubik-Italic.ttf
+      style: italic
+    - asset: assets/fonts/Rubik-Bold.ttf
+      weight: 700
+    - asset: assets/fonts/Rubik-Medium.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

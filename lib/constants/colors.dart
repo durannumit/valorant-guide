@@ -15,4 +15,8 @@ class AppColors {
     800: const Color(0xFFDB7424),
     900: const Color(0xFFD56217)
   };
+
+  static const Color background = Color(0xFF0F1923);
+  static const Color mainTextColor = Color(0xFFEEEEEE);
+  static const Color selectedTabColor = Color(0xFFFD4959);
 }
