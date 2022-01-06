@@ -153,7 +153,7 @@ class Abilities {
     slot = json['slot'];
     displayName = json['displayName'];
     description = json['description'];
-    displayIcon = null;
+    displayIcon = json['displayIcon'];
   }
 
   Map<String, dynamic> toJson() {

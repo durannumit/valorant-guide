@@ -21,4 +21,7 @@ class AppColors {
   static const Color selectedTabColor = Color(0xFFFD4959);
   static const Color gradientStartColor = Color(0xFF6365C2);
   static const Color gradientEndColor = Color(0xFF292A4B);
+  static const Color darkPurple = Color(0xFF1E2050);
+  static const Color grey = Color(0xFF9192A7);
+  static const Color detailListBackground = Color(0xFF14212E);
 }

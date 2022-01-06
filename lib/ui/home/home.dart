@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late PostStore _postStore;
   late ThemeStore _themeStore;
   late LanguageStore _languageStore;
+  final heroController = HeroController();
 
   @override
   void initState() {
@@ -206,90 +207,101 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: _buildBody(),
+      body: SafeArea(child: _buildBody()),
     );
   }
 
   Widget _gridCards() {
     return Observer(builder: (context) {
-      return GridView.count(
+      return GridView.builder(
         // Create a grid with 2 columns. If you change the scrollDirection to
         // horizontal, this produces 2 rows.
-        crossAxisCount: 2,
         physics: new NeverScrollableScrollPhysics(),
-        mainAxisSpacing: 10,
-        childAspectRatio: 0.8,
+        itemCount: _postStore.agentList!.data.length,
         // Generate 100 widgets that display their index in the List.
-        children: List.generate(_postStore.agentList!.data.length, (index) {
-          return Stack(
-            children: [
-              Transform(
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.01)
-                  ..rotateY(-0.06)
-                  ..rotateX(-0.1),
-                alignment: FractionalOffset.bottomLeft,
-                child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          AppColors.gradientStartColor,
-                          AppColors.gradientEndColor,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
-                      color: Colors.purple),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.8,
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, Routes.detail, arguments: _postStore.agentList!.data[index]);
+            },
+            child: Stack(
+              children: [
+                Transform(
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.01)
+                    ..rotateY(-0.06)
+                    ..rotateX(-0.1),
+                  alignment: FractionalOffset.bottomLeft,
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            AppColors.gradientStartColor,
+                            AppColors.gradientEndColor,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                        color: Colors.purple),
+                  ),
                 ),
-              ),
-              _postStore.agentList!.data[index].fullPortrait != null
-                  ? Align(
-                      alignment: Alignment.bottomCenter,
-                      child: CachedNetworkImage(
-                        imageUrl: _postStore.agentList!.data[index].bustPortrait!,
-                        progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                _postStore.agentList!.data[index].fullPortrait != null
+                    ? Align(
+                        alignment: Alignment.bottomCenter,
+                        child: CachedNetworkImage(
+                          imageUrl: _postStore.agentList!.data[index].bustPortrait!,
+                          progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+                      )
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox(
+                          width: 65.0,
+                          height: 65.0,
+                          child: Icon(
+                            Icons.person,
+                            size: 36.0,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    )
-                  : SizedBox(
-                      width: 65.0,
-                      height: 65.0,
-                      child: Icon(
-                        Icons.person,
-                        size: 36.0,
-                        color: Colors.white,
+                Positioned(
+                  left: 10,
+                  bottom: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _postStore.agentList!.data[index].displayName,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: AppColors.mainTextColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          letterSpacing: 2.0,
+                        ),
                       ),
-                    ),
-              Positioned(
-                left: 10,
-                bottom: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _postStore.agentList!.data[index].displayName,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AppColors.mainTextColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        letterSpacing: 2.0,
+                      Text(
+                        _postStore.agentList!.data[index].role != null ? _postStore.agentList!.data[index].role!.displayName : "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 10),
                       ),
-                    ),
-                    Text(
-                      _postStore.agentList!.data[index].role != null ? _postStore.agentList!.data[index].role!.displayName : "",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 10),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
-        }),
+        },
       );
     });
   }
@@ -335,26 +347,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildListItem(int position) {
-    return ListTile(
-      dense: true,
-      leading: Icon(Icons.cloud_circle),
-      title: Text(
-        '${_postStore.agentList?.data[position].displayName}',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        softWrap: false,
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      subtitle: Text(
-        '${_postStore.agentList?.data[position].displayName}',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        softWrap: false,
       ),
     );
   }
