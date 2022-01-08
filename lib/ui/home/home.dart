@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (_postStore.agentList != null) {
                     return _postStore.agentList!.data.isNotEmpty
                         ? Container(
-                            height: (MediaQuery.of(context).size.height * 0.15) * (_postStore.agentList!.data.length).toDouble(),
+                            height: 110 * (_postStore.agentList!.data.length).toDouble(),
                             child: TabBarView(children: [
                               _gridCards(),
                               _gridCards(),
