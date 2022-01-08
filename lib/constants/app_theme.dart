@@ -28,14 +28,14 @@ import 'package:flutter/material.dart';
 final ThemeData themeData = new ThemeData(
   fontFamily: FontFamily.rubik,
   brightness: Brightness.light,
-  primarySwatch: MaterialColor(AppColors.orange[500]!.value, AppColors.orange),
-  primaryColor: AppColors.orange[500],
+  primarySwatch: MaterialColor(AppColors.red[900]!.value, AppColors.red),
+  primaryColor: AppColors.red[900],
   primaryColorBrightness: Brightness.light,
 );
 
 final ThemeData themeDataDark = ThemeData(
   fontFamily: FontFamily.rubik,
   brightness: Brightness.dark,
-  primaryColor: AppColors.orange[500],
+  primaryColor: AppColors.selectedTabColor,
   primaryColorBrightness: Brightness.dark,
 );
