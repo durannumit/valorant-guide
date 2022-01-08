@@ -314,34 +314,31 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildMainContent() {
     return Observer(
       builder: (context) {
-        return _postStore.loading ? CustomProgressIndicatorWidget() : Material(child: _buildHomeView());
+        return _postStore.loading ? CustomProgressIndicatorWidget() : _buildHomeView();
       },
     );
   }
 
   Widget _buildHomeView() {
     return SingleChildScrollView(
-      child: Container(
-        color: AppColors.background,
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Center(
-                child: Container(
-                  height: 64,
-                  width: 64,
-                  child: SvgPicture.asset('assets/icons/valorant_icon.svg'),
-                ),
+      child: Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                height: 64,
+                width: 64,
+                child: SvgPicture.asset('assets/icons/valorant_icon.svg'),
               ),
-              Text(
-                "Choose your \nawesome Agent",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 32),
-              ),
-              tabSection(context),
-            ],
-          ),
+            ),
+            Text(
+              "Choose your \nawesome Agent",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 32),
+            ),
+            tabSection(context),
+          ],
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:valorant_guide/constants/app_theme.dart';
+import 'package:valorant_guide/constants/colors.dart';
 import 'package:valorant_guide/constants/strings.dart';
 import 'package:valorant_guide/data/repository.dart';
 import 'package:valorant_guide/di/components/service_locator.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         name: 'global-observer',
         builder: (context) {
           return MaterialApp(
+              color: AppColors.background,
               debugShowCheckedModeBanner: false,
               title: Strings.appName,
               theme: _themeStore.darkMode ? themeDataDark : themeData,
