@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         color: AppColors.background,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(12.0, 24.0, 12.0, 12.0),
+          padding: EdgeInsets.all(12.0),
           child: Column(
             children: [
               Center(
@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
-          title: AppLocalizations.of(context).translate('home_tv_error'),
+          title: "Error",
           duration: Duration(seconds: 3),
         )..show(context);
       }

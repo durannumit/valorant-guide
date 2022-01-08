@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:valorant_guide/constants/assets.dart';
-import 'package:valorant_guide/data/sharedpref/constants/preferences.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:valorant_guide/constants/colors.dart';
 import 'package:valorant_guide/utils/routes/routes.dart';
-import 'package:valorant_guide/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,7 +20,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Center(child: AppIconWidget(image: Assets.appLogo)),
+      color: AppColors.background,
+      child: Center(
+        child: Container(
+          height: 64,
+          width: 64,
+          child: SvgPicture.asset('assets/icons/valorant_icon.svg'),
+        ),
+      ),
     );
   }
 
@@ -32,12 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navigate() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    if (preferences.getBool(Preferences.is_logged_in) ?? false) {
-      Navigator.of(context).pushReplacementNamed(Routes.home);
-    } else {
-      Navigator.of(context).pushReplacementNamed(Routes.login);
-    }
+    Navigator.of(context).pushReplacementNamed(Routes.home);
   }
 }

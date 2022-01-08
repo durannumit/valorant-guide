@@ -2,13 +2,13 @@ import 'package:valorant_guide/constants/app_theme.dart';
 import 'package:valorant_guide/constants/strings.dart';
 import 'package:valorant_guide/data/repository.dart';
 import 'package:valorant_guide/di/components/service_locator.dart';
+import 'package:valorant_guide/ui/splash/splash.dart';
 import 'package:valorant_guide/utils/routes/routes.dart';
 import 'package:valorant_guide/stores/language/language_store.dart';
 import 'package:valorant_guide/stores/post/post_store.dart';
 import 'package:valorant_guide/stores/theme/theme_store.dart';
 import 'package:valorant_guide/stores/user/user_store.dart';
 import 'package:valorant_guide/ui/home/home.dart';
-import 'package:valorant_guide/ui/login/login.dart';
 import 'package:valorant_guide/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
   final ThemeStore _themeStore = ThemeStore(getIt<Repository>());
   final PostStore _postStore = PostStore(getIt<Repository>());
   final LanguageStore _languageStore = LanguageStore(getIt<Repository>());
-  final UserStore _userStore = UserStore(getIt<Repository>());
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class MyApp extends StatelessWidget {
                 // Built-in localization of basic text for Cupertino widgets
                 GlobalCupertinoLocalizations.delegate,
               ],
-              home: HomeScreen()
+              home: SplashScreen()
               //_userStore.isLoggedIn ? HomeScreen() : LoginScreen(),
               );
         },
