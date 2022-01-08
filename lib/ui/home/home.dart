@@ -23,9 +23,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   //stores:---------------------------------------------------------------------
   late PostStore _postStore;
-  late ThemeStore _themeStore;
-  late LanguageStore _languageStore;
-  final heroController = HeroController();
 
   @override
   void initState() {
@@ -37,8 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
 
     // initializing stores
-    _languageStore = Provider.of<LanguageStore>(context);
-    _themeStore = Provider.of<ThemeStore>(context);
+
     _postStore = Provider.of<PostStore>(context);
 
     // check to see if already called api
