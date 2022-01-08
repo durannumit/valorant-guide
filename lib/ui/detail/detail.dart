@@ -223,21 +223,24 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                             child: ListTile(
                                 leading: CachedNetworkImage(
-                                  imageUrl: agent.abilities[index].displayIcon!,
+                                  imageUrl: agent.abilities[index].displayIcon ?? "http://via.placeholder.com/50x50",
                                   progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
                                   errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
-                                title: Text(
-                                  agent.abilities[index].displayName,
-                                  style: TextStyle(
-                                    color: AppColors.mainTextColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    letterSpacing: 2.0,
+                                title: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                  child: Text(
+                                    agent.abilities[index].displayName,
+                                    style: TextStyle(
+                                      color: AppColors.mainTextColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      letterSpacing: 2.0,
+                                    ),
                                   ),
                                 ),
                                 subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
+                                  padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Text(
                                     agent.abilities[index].description,
                                     style: TextStyle(
