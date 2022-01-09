@@ -20,13 +20,29 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   //stores:---------------------------------------------------------------------
   late PostStore _postStore;
+  late TabController tabController;
+
+  int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
+
+    tabController.addListener(() {
+      setState(() {
+        selectedIndex = tabController.index;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,12 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Tab(
       height: 40,
       child: Container(
-          alignment: Alignment.center,
-          child: Observer(builder: (context) {
-            return Text(
-              "Popular",
-            );
-          })),
+        alignment: Alignment.center,
+        child: Text(
+          "Popular",
+        ),
+      ),
     ),
     Tab(
       height: 40,
@@ -74,273 +89,209 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  Widget tabSection(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: DefaultTabController(
-        length: 3,
-        child: Builder(builder: (BuildContext context) {
-          final TabController tabController = DefaultTabController.of(context)!;
-          tabController.addListener(() {
-            if (!tabController.indexIsChanging) {
-              // Your code goes here.
-              // To get index of current tab use tabController.index
-            }
-          });
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: TabBar(
-                      labelStyle: TextStyle(fontSize: 16, fontFamily: 'ProductSans', color: Colors.white, fontWeight: FontWeight.bold),
-                      indicatorPadding: EdgeInsets.all(0.0),
-                      indicatorColor: AppColors.selectedTabColor,
-                      indicator: UnderlineTabIndicator(
-                        borderSide: BorderSide(
-                          width: 2.0,
-                          color: AppColors.selectedTabColor,
-                        ),
-                        insets: EdgeInsets.symmetric(horizontal: 50.0),
-                      ),
-                      labelPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                      labelColor: AppColors.selectedTabColor,
-                      unselectedLabelColor: Colors.grey,
-                      tabs: tabs
-                      /*
-                        [
-                          
-                          
-                          Tab(
-                            height: 40,
-                            child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: tabController.index == 0
-                                      ? myColors('darkPurple')
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: Observer(builder: (context) {
-                                  return Text("All",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ));
-                                })),
-                          ),
-                          Tab(
-                            height: 40,
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: tabController.index == 1
-                                    ? myColors('darkPurple')
-                                    : Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
-                              child: Text("Income",
-                                  style: TextStyle(
-                                    color: myColors('grey'),
-                                  )),
-                            ),
-                          ),
-                          Tab(
-                            height: 40,
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: tabController.index == 2
-                                    ? myColors('darkPurple')
-                                    : Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
-                              child: Text("Transfers",
-                                  style: TextStyle(
-                                    color: myColors('grey'),
-                                  )),
-                            ),
-                          ),
-                          
-                        ]*/
-                      ),
-                ),
-                Observer(builder: (context) {
-                  if (_postStore.agentList != null) {
-                    return _postStore.agentList!.data.isNotEmpty
-                        ? Container(
-                            height: 110 * (_postStore.agentList!.data.length).toDouble(),
-                            child: TabBarView(children: [
-                              _gridCards(),
-                              _gridCards(),
-                              _gridCards(),
-                            ]),
-                          )
-                        : Container(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: TabBarView(children: [
-                              Container(),
-                              Container(),
-                              Container(),
-                            ]),
-                          );
-                  } else {
-                    return CustomProgressIndicatorWidget();
-                  }
-                }),
-              ],
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    Widget _gridCards() {
+      return Observer(builder: (context) {
+        return GridView.builder(
+          // Create a grid with 2 columns. If you change the scrollDirection to
+          // horizontal, this produces 2 rows.
+          shrinkWrap: true,
+          physics: new NeverScrollableScrollPhysics(),
+          itemCount: _postStore.agentList!.data.length,
+          // Generate 100 widgets that display their index in the List.
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.8,
+            crossAxisCount: 2,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.detail, arguments: _postStore.agentList!.data[index]);
+              },
+              child: Stack(
+                children: [
+                  Transform(
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.01)
+                      ..rotateY(-0.06)
+                      ..rotateX(-0.1),
+                    alignment: FractionalOffset.bottomLeft,
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              AppColors.gradientStartColor,
+                              AppColors.gradientEndColor,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                          color: Colors.purple),
+                    ),
+                  ),
+                  _postStore.agentList!.data[index].fullPortrait != null
+                      ? Align(
+                          alignment: Alignment.bottomCenter,
+                          child: CachedNetworkImage(
+                            imageUrl: _postStore.agentList!.data[index].bustPortrait!,
+                            progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.centerLeft,
+                          child: SizedBox(
+                            width: 65.0,
+                            height: 65.0,
+                            child: Icon(
+                              Icons.person,
+                              size: 36.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                  Positioned(
+                    left: 10,
+                    bottom: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _postStore.agentList!.data[index].displayName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.mainTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                        Text(
+                          _postStore.agentList!.data[index].role != null ? _postStore.agentList!.data[index].role!.displayName : "",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 10),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      });
+    }
+
+    Widget tabSection() {
+      return Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TabBar(
+                labelStyle: TextStyle(fontSize: 16, fontFamily: 'ProductSans', color: Colors.white, fontWeight: FontWeight.bold),
+                indicatorPadding: EdgeInsets.all(0.0),
+                indicatorColor: AppColors.selectedTabColor,
+                indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(
+                    width: 2.0,
+                    color: AppColors.selectedTabColor,
+                  ),
+                  insets: EdgeInsets.symmetric(horizontal: 50.0),
+                ),
+                labelPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+                labelColor: AppColors.selectedTabColor,
+                unselectedLabelColor: Colors.grey,
+                tabs: tabs,
+                controller: tabController,
+                onTap: (index) {
+                  setState(() {
+                    selectedIndex = index;
+                    tabController.animateTo(index);
+                  });
+                },
+              ),
+              Observer(builder: (context) {
+                if (_postStore.agentList != null) {
+                  return _postStore.agentList!.data.isNotEmpty
+                      ? IndexedStack(
+                          index: selectedIndex,
+                          children: [
+                            _gridCards(),
+                            _gridCards(),
+                            _gridCards(),
+                          ],
+                        )
+                      : IndexedStack(
+                          index: selectedIndex,
+                          children: [
+                            Container(),
+                            Container(),
+                            Container(),
+                          ],
+                        );
+                } else {
+                  return CustomProgressIndicatorWidget();
+                }
+              }),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget _buildHomeView() {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  height: 64,
+                  width: 64,
+                  child: SvgPicture.asset('assets/icons/valorant_icon.svg'),
+                ),
+              ),
+              Text(
+                "Choose your \nawesome Agent",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 32),
+              ),
+              tabSection(),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget _buildMainContent() {
+      return Observer(
+        builder: (context) {
+          return _postStore.loading ? CustomProgressIndicatorWidget() : _buildHomeView();
+        },
+      );
+    }
+
+    Widget _buildBody() {
+      return Stack(
+        children: <Widget>[
+          _handleErrorMessage(),
+          _buildMainContent(),
+        ],
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(child: _buildBody()),
-    );
-  }
-
-  Widget _gridCards() {
-    return Observer(builder: (context) {
-      return GridView.builder(
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        physics: new NeverScrollableScrollPhysics(),
-        itemCount: _postStore.agentList!.data.length,
-        // Generate 100 widgets that display their index in the List.
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 10,
-          childAspectRatio: 0.8,
-          crossAxisCount: 2,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.detail, arguments: _postStore.agentList!.data[index]);
-            },
-            child: Stack(
-              children: [
-                Transform(
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.01)
-                    ..rotateY(-0.06)
-                    ..rotateX(-0.1),
-                  alignment: FractionalOffset.bottomLeft,
-                  child: Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            AppColors.gradientStartColor,
-                            AppColors.gradientEndColor,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
-                        color: Colors.purple),
-                  ),
-                ),
-                _postStore.agentList!.data[index].fullPortrait != null
-                    ? Align(
-                        alignment: Alignment.bottomCenter,
-                        child: CachedNetworkImage(
-                          imageUrl: _postStore.agentList!.data[index].bustPortrait!,
-                          progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                        ),
-                      )
-                    : Align(
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          width: 65.0,
-                          height: 65.0,
-                          child: Icon(
-                            Icons.person,
-                            size: 36.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                Positioned(
-                  left: 10,
-                  bottom: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _postStore.agentList!.data[index].displayName,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColors.mainTextColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          letterSpacing: 2.0,
-                        ),
-                      ),
-                      Text(
-                        _postStore.agentList!.data[index].role != null ? _postStore.agentList!.data[index].role!.displayName : "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    });
-  }
-
-  Widget _buildBody() {
-    return Stack(
-      children: <Widget>[
-        _handleErrorMessage(),
-        _buildMainContent(),
-      ],
-    );
-  }
-
-  Widget _buildMainContent() {
-    return Observer(
-      builder: (context) {
-        return _postStore.loading ? CustomProgressIndicatorWidget() : _buildHomeView();
-      },
-    );
-  }
-
-  Widget _buildHomeView() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                height: 64,
-                width: 64,
-                child: SvgPicture.asset('assets/icons/valorant_icon.svg'),
-              ),
-            ),
-            Text(
-              "Choose your \nawesome Agent",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.mainTextColor, fontWeight: FontWeight.w600, fontSize: 32),
-            ),
-            tabSection(context),
-          ],
-        ),
-      ),
     );
   }
 
