@@ -96,11 +96,13 @@ Valorant Agents uses the [Valorant-api](https://dash.valorant-api.com/) for requ
 Valorant-api provides an extensive API containing data of most in-game items, assets and more!
 
 ### Tasks
-- [x] Make HomePage items background color dynamic
+- [ ] Make HomePage items background color dynamic
 
-- [x] Get more data from API and add more pages
+- [ ] Get more data from API and add more pages
 
-- [x] Localization
+- [ ] Localization
+
+- [ ] Widget Testing
 
 ### License
 ```xml
