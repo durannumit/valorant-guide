@@ -22,7 +22,7 @@
 
 
 <p align="center">
-Valorant Guide app is a small demo application to demonstrate Flutter application tech-stacks with a MobX and Provider. It's still under development and open for PR.
+Valorant Guide app is a small demo application to demonstrate Flutter application tech-stacks with a MobX and Provider. I don't have design file so just tried to do what I see. It's still under development and open for PR.
 </p>
 
 ### Libraries & Tools Used
